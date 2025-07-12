@@ -1,6 +1,6 @@
-# [poidh](https://github.com/picsoritdidnthappen/poidh-app) Indexer Repository
+# [enb](https://github.com/KcPele/enb-app) Indexer Repository
 
-## This repository contains the indexer service for the [poidh](https://github.com/picsoritdidnthappen/poidh-app) application.
+## This repository contains the indexer service for the [enb](https://github.com/KcPele/enb-app) application.
 
 ## Getting Started
 
@@ -13,13 +13,13 @@ Follow the steps below to set up and run the indexer locally.
 Make sure you have [Git](https://git-scm.com/docs) installed. Then, clone the repository:
 
 ```bash
-git clone https://github.com/yukigesho/poidh-indexer.git
+git clone https://github.com/KcPele/enb-indexer.git
 ```
 
 Navigate to the project directory:
 
 ```bash
-cd poidh-indexer
+cd enb-indexer
 ```
 
 ---
@@ -41,10 +41,9 @@ Replace `<username>`, `<password>`, `<host>`, `<port>`, and `<database>` with yo
 To interact with various blockchain networks, add the following RPC URLs to your .env.local file:
 
 ```plaintext
-ARBITRUM_RPC_URL="https://arb-mainnet.g.alchemy.com/v2/<your-alchemy-api-key>"
 BASE_RPC_URL="https://base-mainnet.g.alchemy.com/v2/<your-alchemy-api-key>"
-DEGEN_RPC_URL="https://rpc.degen.tips"
 ```
+
 Replace <your-alchemy-api-key> with your Alchemy API key for the respective networks.
 
 ---
