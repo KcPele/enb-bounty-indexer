@@ -28,7 +28,7 @@ app.openapi(getChainBountiesRoute, (c) => {
       chainId: 8453,
       title: "say something nice about someone on farcaster 💜",
       description:
-        "celebrate ENB's multichain launch 🎉 - post something nice about someone else on farcaster and tag them in your post - upload a screenshot here and share a link to your post in your claim description - this bounty is created by the poidh team - we will choose our favorite entry tuesday, june 18th",
+        "celebrate ENB's multichain launch 🎉 - post something nice about someone else on farcaster and tag them in your post - upload a screenshot here and share a link to your post in your claim description - this bounty is created by the ENB team - we will choose our favorite entry tuesday, june 18th",
       amount: "3300000000000000",
       amountSort: 0.0033,
       issuer: "0xbed82560c39c133a3d64516ecda82c71b72f3cd7",
@@ -44,7 +44,7 @@ app.openapi(getChainBountiesRoute, (c) => {
       chainId: 8453,
       title: "your favorite vinyl 🎵",
       description:
-        "celebrate ENB's multichain launch 🎉 - upload a pic of a vinyl record that you own and say what you love about the record - this bounty is created by the poidh team - we will choose our favorite entry tuesday, june 18th",
+        "celebrate ENB's multichain launch 🎉 - upload a pic of a vinyl record that you own and say what you love about the record - this bounty is created by the ENB team - we will choose our favorite entry tuesday, june 18th",
       amount: "3300000000000000",
       amountSort: 0.0033,
       issuer: "0xbed82560c39c133a3d64516ecda82c71b72f3cd7",
@@ -60,7 +60,7 @@ app.openapi(getChainBountiesRoute, (c) => {
       chainId: 8453,
       title: "touch grass 🌱",
       description:
-        "celebrate ENB's multichain launch 🎉 - upload a pic of yourself touching grass - this bounty is created by the poidh team - we will choose our favorite entry tuesday, june 18th",
+        "celebrate ENB's multichain launch 🎉 - upload a pic of yourself touching grass - this bounty is created by the ENB team - we will choose our favorite entry tuesday, june 18th",
       amount: "3300000000000000",
       amountSort: 0.0033,
       issuer: "0xbed82560c39c133a3d64516ecda82c71b72f3cd7",
@@ -81,7 +81,7 @@ app.openapi(getLiveBountiesRoute, (c) => {
       chainId: 8453,
       title: "say something nice about someone on farcaster 💜",
       description:
-        "celebrate ENB's multichain launch 🎉 - post something nice about someone else on farcaster and tag them in your post - upload a screenshot here and share a link to your post in your claim description - this bounty is created by the poidh team - we will choose our favorite entry tuesday, june 18th",
+        "celebrate ENB's multichain launch 🎉 - post something nice about someone else on farcaster and tag them in your post - upload a screenshot here and share a link to your post in your claim description - this bounty is created by the ENB team - we will choose our favorite entry tuesday, june 18th",
       amount: "3300000000000000",
       amountSort: 0.0033,
       issuer: "0xbed82560c39c133a3d64516ecda82c71b72f3cd7",
@@ -97,7 +97,7 @@ app.openapi(getLiveBountiesRoute, (c) => {
       chainId: 8453,
       title: "touch grass 🌱",
       description:
-        "celebrate ENB's multichain launch 🎉 - upload a pic of yourself touching grass - this bounty is created by the poidh team - we will choose our favorite entry tuesday, june 18th",
+        "celebrate ENB's multichain launch 🎉 - upload a pic of yourself touching grass - this bounty is created by the ENB team - we will choose our favorite entry tuesday, june 18th",
       amount: "3300000000000000",
       amountSort: 0.0033,
       issuer: "0xbed82560c39c133a3d64516ecda82c71b72f3cd7",
@@ -117,7 +117,7 @@ app.openapi(getVotingBountiesRoute, (c) => {
       chainId: 8453,
       title: "your favorite vinyl 🎵",
       description:
-        "celebrate ENB's multichain launch 🎉 - upload a pic of a vinyl record that you own and say what you love about the record - this bounty is created by the poidh team - we will choose our favorite entry tuesday, june 18th",
+        "celebrate ENB's multichain launch 🎉 - upload a pic of a vinyl record that you own and say what you love about the record - this bounty is created by the ENB team - we will choose our favorite entry tuesday, june 18th",
       amount: "3300000000000000",
       amountSort: 0.0033,
       issuer: "0xbed82560c39c133a3d64516ecda82c71b72f3cd7",
@@ -133,7 +133,7 @@ app.openapi(getVotingBountiesRoute, (c) => {
       chainId: 8453,
       title: "touch grass 🌱",
       description:
-        "celebrate ENB's multichain launch 🎉 - upload a pic of yourself touching grass - this bounty is created by the poidh team - we will choose our favorite entry tuesday, june 18th",
+        "celebrate ENB's multichain launch 🎉 - upload a pic of yourself touching grass - this bounty is created by the ENB team - we will choose our favorite entry tuesday, june 18th",
       amount: "3300000000000000",
       amountSort: 0.0033,
       issuer: "0xbed82560c39c133a3d64516ecda82c71b72f3cd7",
@@ -154,7 +154,7 @@ app.openapi(getPastBountiesRoute, (c) => {
       chainId: 8453,
       title: "say something nice about someone on farcaster 💜",
       description:
-        "celebrate ENB's multichain launch 🎉 - post something nice about someone else on farcaster and tag them in your post - upload a screenshot here and share a link to your post in your claim description - this bounty is created by the poidh team - we will choose our favorite entry tuesday, june 18th",
+        "celebrate ENB's multichain launch 🎉 - post something nice about someone else on farcaster and tag them in your post - upload a screenshot here and share a link to your post in your claim description - this bounty is created by the ENB team - we will choose our favorite entry tuesday, june 18th",
       amount: "3300000000000000",
       amountSort: 0.0033,
       issuer: "0xbed82560c39c133a3d64516ecda82c71b72f3cd7",
@@ -170,7 +170,7 @@ app.openapi(getPastBountiesRoute, (c) => {
       chainId: 8453,
       title: "touch grass 🌱",
       description:
-        "celebrate ENB's multichain launch 🎉 - upload a pic of yourself touching grass - this bounty is created by the poidh team - we will choose our favorite entry tuesday, june 18th",
+        "celebrate ENB's multichain launch 🎉 - upload a pic of yourself touching grass - this bounty is created by the ENB team - we will choose our favorite entry tuesday, june 18th",
       amount: "3300000000000000",
       amountSort: 0.0033,
       issuer: "0xbed82560c39c133a3d64516ecda82c71b72f3cd7",
@@ -190,7 +190,7 @@ app.openapi(getBountyRoute, (c) => {
     chainId: 8453,
     title: "say something nice about someone on farcaster 💜",
     description:
-      "celebrate ENB's multichain launch 🎉 - post something nice about someone else on farcaster and tag them in your post - upload a screenshot here and share a link to your post in your claim description - this bounty is created by the poidh team - we will choose our favorite entry tuesday, june 18th",
+      "celebrate ENB's multichain launch 🎉 - post something nice about someone else on farcaster and tag them in your post - upload a screenshot here and share a link to your post in your claim description - this bounty is created by the ENB team - we will choose our favorite entry tuesday, june 18th",
     amount: "3300000000000000",
     amountSort: 0.0033,
     issuer: "0xbed82560c39c133a3d64516ecda82c71b72f3cd7",
