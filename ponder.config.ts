@@ -19,8 +19,8 @@ export default createConfig({
       abi: ENBBountyABI,
       chain: {
         base: {
-          address: "0x54C9089ba815f2d934ea693fd1AD1844563649cc",
-          startBlock: 33414605,
+          address: "0x68C9cD893341220863e16E27800d81F01F6DFb83",
+          startBlock: 33416269,
         },
       },
     },
@@ -28,8 +28,8 @@ export default createConfig({
       abi: ENBBountyNFTABI,
       chain: {
         base: {
-          address: "0xC4427a1De63885446B0c90889c6CCfaf27fFA525",
-          startBlock: 33414605,
+          address: "0xFC3dB3f829765D2D192F3d5C3Aa6f24121068346",
+          startBlock: 33416269,
         },
       },
     },
