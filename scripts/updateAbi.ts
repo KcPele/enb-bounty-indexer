@@ -30,3 +30,5 @@ const abiPath = path.join(__dirname, "../abis/ENBBountyNFTAbi.ts");
 fs.writeFileSync(abiPath, abiContent);
 
 console.log("ABI updated successfully!");
+
+// to run: npx tsx scripts/updateAbi.ts

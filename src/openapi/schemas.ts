@@ -58,6 +58,25 @@ export const BountySchema = z
       example: 1713370239,
       description: "Voting deadline",
     }),
+    maxWinners: z.number().openapi({
+      example: 1,
+      description: "Maximum number of winners",
+      default: 1,
+    }),
+    winnersCount: z.number().openapi({
+      example: 0,
+      description: "Current number of winners",
+      default: 0,
+    }),
+    tokenType: z.number().openapi({
+      example: 0,
+      description: "Token type (0=ETH, 1=USDC, 2=ENB)",
+      default: 0,
+    }),
+    tokenAddress: z.string().nullable().openapi({
+      example: "0x0000000000000000000000000000000000000000",
+      description: "Token contract address",
+    }),
   })
   .openapi("Bounty");
 
@@ -169,3 +188,168 @@ export const GetByClaimIdAndChainIdParamsSchema =
       example: 777,
     }),
   });
+
+// New schemas for enhanced features
+
+export const BountyWinnerSchema = z
+  .object({
+    bountyId: z.number().openapi({
+      example: 1337,
+      description: "Bounty ID",
+    }),
+    chainId: z.number().openapi({
+      example: 8453,
+      description: "Chain ID",
+    }),
+    winner: z.string().openapi({
+      example: "0x1337567890abcdef",
+      description: "Winner address",
+    }),
+    claimId: z.number().openapi({
+      example: 777,
+      description: "Winning claim ID",
+    }),
+    amount: z.string().openapi({
+      example: "1000000000000000000",
+      description: "Amount won (bigint)",
+    }),
+    timestamp: z.string().openapi({
+      example: "1713370239000",
+      description: "Timestamp (bigint)",
+    }),
+  })
+  .openapi("BountyWinner");
+
+export const VoteSchema = z
+  .object({
+    bountyId: z.number().openapi({
+      example: 1337,
+      description: "Bounty ID",
+    }),
+    chainId: z.number().openapi({
+      example: 8453,
+      description: "Chain ID",
+    }),
+    claimId: z.number().openapi({
+      example: 777,
+      description: "Claim ID",
+    }),
+    voter: z.string().openapi({
+      example: "0x1337567890abcdef",
+      description: "Voter address",
+    }),
+    vote: z.boolean().openapi({
+      example: true,
+      description: "Vote (true=yes, false=no)",
+    }),
+    timestamp: z.string().openapi({
+      example: "1713370239000",
+      description: "Timestamp (bigint)",
+    }),
+  })
+  .openapi("Vote");
+
+export const SupportedTokenSchema = z
+  .object({
+    address: z.string().openapi({
+      example: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+      description: "Token contract address",
+    }),
+    chainId: z.number().openapi({
+      example: 8453,
+      description: "Chain ID",
+    }),
+    tokenType: z.number().openapi({
+      example: 1,
+      description: "Token type (0=ETH, 1=USDC, 2=ENB)",
+    }),
+    symbol: z.string().openapi({
+      example: "USDC",
+      description: "Token symbol",
+    }),
+    decimals: z.number().openapi({
+      example: 6,
+      description: "Token decimals",
+    }),
+    name: z.string().openapi({
+      example: "USD Coin",
+      description: "Token name",
+    }),
+  })
+  .openapi("SupportedToken");
+
+export const VotingStatsSchema = z
+  .object({
+    bountyId: z.number().openapi({
+      example: 1337,
+      description: "Bounty ID",
+    }),
+    chainId: z.number().openapi({
+      example: 8453,
+      description: "Chain ID",
+    }),
+    totalVotes: z.number().openapi({
+      example: 10,
+      description: "Total number of votes",
+    }),
+    votesByClaimId: z.record(
+      z.object({
+        yesVotes: z.number(),
+        noVotes: z.number(),
+      })
+    ).openapi({
+      example: {
+        "777": { yesVotes: 5, noVotes: 2 },
+        "888": { yesVotes: 3, noVotes: 0 },
+      },
+      description: "Votes grouped by claim ID",
+    }),
+  })
+  .openapi("VotingStats");
+
+export const GetByTokenTypeParamsSchema = z.object({
+  chainId: z.number().openapi({
+    param: {
+      name: "chainId",
+      in: "path",
+    },
+    example: 8453,
+  }),
+  tokenType: z.number().openapi({
+    param: {
+      name: "tokenType",
+      in: "path",
+    },
+    example: 1,
+    description: "Token type (0=ETH, 1=USDC, 2=ENB)",
+  }),
+});
+
+export const GetByUserAddressParamsSchema = z.object({
+  address: z.string().openapi({
+    param: {
+      name: "address",
+      in: "path",
+    },
+    example: "0x1337567890abcdef",
+  }),
+  chainId: z.number().openapi({
+    param: {
+      name: "chainId",
+      in: "path",
+    },
+    example: 8453,
+  }),
+});
+
+export const BountyWinnersSchema = z
+  .array(BountyWinnerSchema)
+  .openapi("BountyWinners");
+
+export const VotesSchema = z
+  .array(VoteSchema)
+  .openapi("Votes");
+
+export const SupportedTokensSchema = z
+  .array(SupportedTokenSchema)
+  .openapi("SupportedTokens");

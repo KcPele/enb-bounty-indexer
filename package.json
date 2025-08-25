@@ -14,8 +14,10 @@
     "@hono/swagger-ui": "^0.5.0",
     "@hono/zod-openapi": "^0.18.4",
     "@hono/zod-validator": "^0.4.3",
+    "axios": "^1.11.0",
     "hono": "^4.7.0",
     "hono-openapi": "^0.4.5",
+    "pg": "^8.16.3",
     "ponder": "^0.11.27",
     "viem": "^2.23.1",
     "zod": "^3.24.2",
@@ -23,6 +25,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.17.17",
+    "@types/pg": "^8.15.5",
     "eslint": "^8.57.1",
     "eslint-config-ponder": "^0.6.26",
     "typescript": "^5.7.3"
