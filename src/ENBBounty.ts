@@ -10,7 +10,8 @@ import {
   votes,
   supportedTokens,
 } from "../ponder.schema";
-import { formatEther, formatUnits } from "viem";
+import { formatUnits, decodeFunctionData } from "viem";
+import ENBBountyABI from "../abis/ENBBountyAbi";
 import { sql, and, eq } from "ponder";
 
 // Helper function to get token decimals based on type
@@ -50,8 +51,20 @@ ponder.on(
       .values({ address: issuer })
       .onConflictDoNothing();
 
-    // Determine if it's multiplayer based on participants
-    const isMultiplayer = false; // Will be updated when someone joins
+    // Determine if it's an open bounty at creation by decoding the tx input
+    let isMultiplayer = false;
+    try {
+      const selector = event.transaction.input as `0x${string}` | undefined;
+      if (selector) {
+        const decoded = decodeFunctionData({ abi: ENBBountyABI as any, data: selector });
+        const fn = decoded.functionName;
+        if (fn === "createOpenBounty" || fn === "createOpenTokenBounty") {
+          isMultiplayer = true;
+        }
+      }
+    } catch (_) {
+      // If decoding fails, default remains false; joined event will later flip it
+    }
 
     // Format amount based on token type
     const tokenTypeNum = Number(tokenType);
