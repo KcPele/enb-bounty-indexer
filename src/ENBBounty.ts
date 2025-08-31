@@ -73,6 +73,65 @@ ponder.on(
       tokenAddress: tokenAddress || null,
     });
 
+    // Upsert supported token metadata (for token bounties)
+    try {
+      if (tokenTypeNum !== 0 && tokenAddress) {
+        const [symbol, decimalsRead, nameRead] = await Promise.all([
+          context.client.readContract({
+            abi: [
+              { name: 'symbol', type: 'function', stateMutability: 'view', inputs: [], outputs: [{ type: 'string' }] },
+            ],
+            address: tokenAddress as `0x${string}`,
+            functionName: 'symbol',
+          }).catch(() => 'TOKEN'),
+          context.client.readContract({
+            abi: [
+              { name: 'decimals', type: 'function', stateMutability: 'view', inputs: [], outputs: [{ type: 'uint8' }] },
+            ],
+            address: tokenAddress as `0x${string}`,
+            functionName: 'decimals',
+          }).catch(() => getTokenDecimals(tokenTypeNum)),
+          context.client.readContract({
+            abi: [
+              { name: 'name', type: 'function', stateMutability: 'view', inputs: [], outputs: [{ type: 'string' }] },
+            ],
+            address: tokenAddress as `0x${string}`,
+            functionName: 'name',
+          }).catch(() => (tokenTypeNum === 1 ? 'USD Coin' : 'ENB Token')),
+        ]);
+
+        await database
+          .insert(supportedTokens)
+          .values({
+            address: tokenAddress as `0x${string}`,
+            chainId,
+            tokenType: tokenTypeNum,
+            symbol: String(symbol),
+            decimals: Number(decimalsRead),
+            name: String(nameRead),
+          })
+          .onConflictDoUpdate({
+            symbol: String(symbol),
+            decimals: Number(decimalsRead),
+            name: String(nameRead),
+            tokenType: tokenTypeNum,
+          });
+      } else {
+        // Ensure ETH appears as a supported token.
+        await database
+          .insert(supportedTokens)
+          .values({
+            address: '0x0000000000000000000000000000000000000000',
+            chainId,
+            tokenType: 0,
+            symbol: 'ETH',
+            decimals: 18,
+            name: 'Ether',
+          })
+          .onConflictDoNothing();
+      }
+    } catch {}
+
     // Track initial participation for solo bounties
     await database.insert(participationsBounties).values({
       userAddress: issuer,
@@ -328,8 +387,19 @@ ponder.on(
 
 ponder.on("ENBBountyContract:ClaimCreated", async ({ event, context }) => {
   const database = context.db;
-  // From library event: (id, issuer, bountyId, bountyIssuer, name, description, createdAt)
-  const { id, issuer, bountyId, name, description, createdAt } = event.args as any;
+  // Library event signature:
+  // (id, issuer, bountyId, bountyIssuer, name, description, createdAt)
+  const args: any = event.args as any;
+  const claimId = Number(args?.id ?? args?.[0]);
+  const issuer = (args?.issuer ?? args?.[1]) as `0x${string}`;
+  const bountyIdRaw = args?.bountyId ?? args?.[2];
+  const bountyIdNum =
+    typeof bountyIdRaw === 'bigint'
+      ? Number(bountyIdRaw)
+      : Number(bountyIdRaw);
+  const title = (args?.name ?? args?.[4]) as string;
+  const description = (args?.description ?? args?.[5]) as string;
+
   const { hash, transactionIndex } = event.transaction;
   const { timestamp } = event.block;
   const chainId = Number(context.chain?.id ?? 0);
@@ -339,35 +409,41 @@ ponder.on("ENBBountyContract:ClaimCreated", async ({ event, context }) => {
     .values({ address: issuer })
     .onConflictDoNothing();
 
-  await database.sql
+  // Ensure bounty exists (best-effort)
+  const bountyRows = await database.sql
     .select()
     .from(bounties)
-    .where(
-      and(eq(bounties.id, Number(bountyId)), eq(bounties.chainId, chainId))
-    )
+    .where(and(eq(bounties.id, bountyIdNum), eq(bounties.chainId, chainId)))
     .limit(1);
 
-  await database.insert(claims).values({
-    id: Number(id),
-    chainId,
-    title: name,
-    description: description,
-    url: "", // URL not in event
-    issuer,
-    isAccepted: false,
-    bountyId: Number(bountyId),
-    owner: issuer,
-  }).onConflictDoNothing();
+  // Insert claim regardless (keeps data flowing; UI can still show claims)
+  await database
+    .insert(claims)
+    .values({
+      id: claimId,
+      chainId,
+      title: title || '',
+      description: description || '',
+      url: '', // Not emitted; can be enriched separately
+      issuer,
+      isAccepted: false,
+      bountyId: bountyIdNum,
+      owner: issuer,
+    })
+    .onConflictDoNothing();
 
-  await database.insert(transactions).values({
-    index: transactionIndex,
-    tx: hash,
-    address: issuer,
-    bountyId: Number(bountyId),
-    action: `claim created`,
-    chainId,
-    timestamp,
-  }).onConflictDoNothing();
+  await database
+    .insert(transactions)
+    .values({
+      index: transactionIndex,
+      tx: hash,
+      address: issuer,
+      bountyId: bountyIdNum,
+      action: `claim created`,
+      chainId,
+      timestamp,
+    })
+    .onConflictDoNothing();
 });
 
 ponder.on("ENBBountyContract:ClaimAccepted", async ({ event, context }) => {
