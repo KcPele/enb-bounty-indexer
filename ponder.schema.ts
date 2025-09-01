@@ -17,18 +17,26 @@ export const bounties = onchainTable(
     amountSort: t.real().notNull(),
     issuer: t.hex().notNull(),
 
+    // New fields for updated contract
+    maxWinners: t.integer().notNull().default(1),
+    winnersCount: t.integer().notNull().default(0),
+    tokenType: t.integer().notNull().default(0), // 0=ETH, 1=USDC, 2=ENB
+    tokenAddress: t.hex(),
+
+    // Status fields
     inProgress: t.boolean().default(true),
-    isJoinedBounty: t.boolean().default(false),
     isCanceled: t.boolean().default(false),
     isMultiplayer: t.boolean(),
     isVoting: t.boolean().default(false),
     deadline: t.integer(),
+    currentVotingClaimId: t.integer(),
   }),
   (table) => ({
     pk: primaryKey({
       columns: [table.id, table.chainId],
     }),
     chain_idx: index().on(table.chainId),
+    token_type_idx: index().on(table.tokenType),
   }),
 );
 
@@ -206,6 +214,103 @@ export const leaderboardRelations = relations(
   ({ one }) => ({
     user: one(users, {
       fields: [leaderboard.address],
+      references: [users.address],
+    }),
+  }),
+);
+
+// New tables for updated contract features
+
+export const bountyWinners = onchainTable(
+  "BountyWinners",
+  (t) => ({
+    bountyId: t.integer().notNull(),
+    chainId: t.integer().notNull(),
+    winner: t.hex().notNull(),
+    claimId: t.integer().notNull(),
+    amount: t.text().notNull(),
+    timestamp: t.bigint().notNull(),
+  }),
+  (table) => ({
+    pk: primaryKey({
+      columns: [table.bountyId, table.chainId, table.winner],
+    }),
+    bounty_idx: index().on(table.bountyId),
+    winner_idx: index().on(table.winner),
+  }),
+);
+
+export const votes = onchainTable(
+  "Votes",
+  (t) => ({
+    bountyId: t.integer().notNull(),
+    chainId: t.integer().notNull(),
+    claimId: t.integer().notNull(),
+    voter: t.hex().notNull(),
+    vote: t.boolean().notNull(), // true=yes, false=no
+    timestamp: t.bigint().notNull(),
+  }),
+  (table) => ({
+    pk: primaryKey({
+      columns: [table.bountyId, table.chainId, table.voter, table.claimId],
+    }),
+    bounty_idx: index().on(table.bountyId),
+    claim_idx: index().on(table.claimId),
+    voter_idx: index().on(table.voter),
+  }),
+);
+
+export const supportedTokens = onchainTable(
+  "SupportedTokens",
+  (t) => ({
+    address: t.hex().notNull(),
+    chainId: t.integer().notNull(),
+    tokenType: t.integer().notNull(),
+    symbol: t.text().notNull(),
+    decimals: t.integer().notNull(),
+    name: t.text().notNull(),
+  }),
+  (table) => ({
+    pk: primaryKey({
+      columns: [table.address, table.chainId],
+    }),
+    chain_idx: index().on(table.chainId),
+    type_idx: index().on(table.tokenType),
+  }),
+);
+
+// Add relations for new tables
+export const bountyWinnersRelations = relations(
+  bountyWinners,
+  ({ one }) => ({
+    bounty: one(bounties, {
+      fields: [bountyWinners.bountyId, bountyWinners.chainId],
+      references: [bounties.id, bounties.chainId],
+    }),
+    winner: one(users, {
+      fields: [bountyWinners.winner],
+      references: [users.address],
+    }),
+    claim: one(claims, {
+      fields: [bountyWinners.claimId, bountyWinners.chainId],
+      references: [claims.id, claims.chainId],
+    }),
+  }),
+);
+
+export const votesRelations = relations(
+  votes,
+  ({ one }) => ({
+    bounty: one(bounties, {
+      fields: [votes.bountyId, votes.chainId],
+      references: [bounties.id, bounties.chainId],
+    }),
+    claim: one(claims, {
+      fields: [votes.claimId, votes.chainId],
+      references: [claims.id, claims.chainId],
+    }),
+    voter: one(users, {
+      fields: [votes.voter],
       references: [users.address],
     }),
   }),

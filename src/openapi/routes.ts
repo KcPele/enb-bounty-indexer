@@ -8,6 +8,12 @@ import {
   ParticipationsSchema,
   GetByClaimIdAndChainIdParamsSchema,
   ClaimSchema,
+  BountyWinnersSchema,
+  VotesSchema,
+  SupportedTokensSchema,
+  VotingStatsSchema,
+  GetByTokenTypeParamsSchema,
+  GetByUserAddressParamsSchema,
 } from "./schemas";
 
 export const getChainBountiesRoute = createRoute({
@@ -175,6 +181,134 @@ export const getClaimRoute = createRoute({
         },
       },
       description: "Retrieve a claim",
+    },
+  },
+});
+
+// New routes for enhanced features
+
+export const getBountyWinnersRoute = createRoute({
+  method: "get",
+  path: "/bounty/{chainId}/{bountyId}/winners",
+  request: {
+    params: GetByBountyIdAndChainIdParamsSchema,
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: BountyWinnersSchema,
+        },
+      },
+      description: "Retrieve bounty winners",
+    },
+  },
+});
+
+export const getBountyVotesRoute = createRoute({
+  method: "get",
+  path: "/bounty/{chainId}/{bountyId}/votes",
+  request: {
+    params: GetByBountyIdAndChainIdParamsSchema,
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: VotesSchema,
+        },
+      },
+      description: "Retrieve votes for a bounty",
+    },
+  },
+});
+
+export const getBountyVotingStatsRoute = createRoute({
+  method: "get",
+  path: "/bounty/{chainId}/{bountyId}/voting-stats",
+  request: {
+    params: GetByBountyIdAndChainIdParamsSchema,
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: VotingStatsSchema,
+        },
+      },
+      description: "Retrieve voting statistics for a bounty",
+    },
+  },
+});
+
+export const getBountiesByTokenTypeRoute = createRoute({
+  method: "get",
+  path: "/bounty/{chainId}/token/{tokenType}",
+  request: {
+    params: GetByTokenTypeParamsSchema,
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: BountiesSchema,
+        },
+      },
+      description: "Retrieve bounties by token type",
+    },
+  },
+});
+
+export const getSupportedTokensRoute = createRoute({
+  method: "get",
+  path: "/tokens/{chainId}",
+  request: {
+    params: GetByChainId,
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: SupportedTokensSchema,
+        },
+      },
+      description: "Retrieve supported tokens",
+    },
+  },
+});
+
+export const getMultiplayerBountiesRoute = createRoute({
+  method: "get",
+  path: "/bounty/{chainId}/multiplayer",
+  request: {
+    params: GetByChainId,
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: BountiesSchema,
+        },
+      },
+      description: "Retrieve multiplayer bounties",
+    },
+  },
+});
+
+export const getUserWinsRoute = createRoute({
+  method: "get",
+  path: "/user/{address}/wins/{chainId}",
+  request: {
+    params: GetByUserAddressParamsSchema,
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: BountyWinnersSchema,
+        },
+      },
+      description: "Retrieve user's winning claims",
     },
   },
 });

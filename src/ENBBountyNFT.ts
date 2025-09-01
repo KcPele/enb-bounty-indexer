@@ -27,20 +27,47 @@ ponder.on("ENBBountyNFTContract:Transfer", async ({ event, context }) => {
     blockNumber: event.block.number,
   });
 
+  // Also read claim details from ENBBounty to associate correct bountyId and metadata
+  // This ensures we don't end up with bountyId=0 placeholders.
+  let claimData: any = null;
+  try {
+    claimData = await context.client.readContract({
+      abi: context.contracts.ENBBountyContract.abi,
+      address: context.contracts.ENBBountyContract.address,
+      functionName: "claims",
+      args: [tokenId],
+      blockNumber: event.block.number,
+    });
+  } catch (e) {
+    // If call fails, fall back to minimal update
+  }
+
+  const idNum = Number(tokenId);
+  const title = (claimData?.[4] as string) ?? ""; // name
+  const description = (claimData?.[5] as string) ?? "";
+  const bountyId = Number(claimData?.[2] ?? 0);
+  const issuerAddr = (claimData?.[1] as `0x${string}`) ?? to;
+
+  // Upsert claim with correct bountyId and url; if row exists, update url/owner/title/description when present
   await database
     .insert(claims)
     .values({
-      id: Number(tokenId),
+      id: idNum,
       chainId,
-      title: "",
-      description: "",
+      title,
+      description,
       url,
-      bountyId: 0,
+      bountyId,
       owner: to,
-      issuer: to,
+      issuer: issuerAddr,
     })
     .onConflictDoUpdate({
       owner: to,
+      url,
+      title,
+      description,
+      bountyId,
+      issuer: issuerAddr,
     });
 
   if (!IGNORE_ADDRESSES.includes(from.toLowerCase())) {
