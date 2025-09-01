@@ -16,16 +16,6 @@ const ENBBountyABI = [
         name: "_startClaimIndex",
         type: "uint256",
       },
-      {
-        internalType: "address",
-        name: "_usdcAddress",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "_enbAddress",
-        type: "address",
-      },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
@@ -365,6 +355,38 @@ const ENBBountyABI = [
       },
     ],
     name: "ResetVotingPeriod",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "enum BountyStorageLib.TokenType",
+        name: "tokenType",
+        type: "uint8",
+      },
+    ],
+    name: "SupportedTokenAdded",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+    ],
+    name: "SupportedTokenRemoved",
     type: "event",
   },
   {

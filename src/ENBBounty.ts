@@ -191,6 +191,67 @@ ponder.on(
   }
 );
 
+// Supported token management (contract-level add/remove)
+ponder.on("ENBBountyContract:SupportedTokenAdded", async ({ event, context }) => {
+  const database = context.db;
+  const chainId = Number(context.chain?.id ?? 0);
+  const { token, tokenType } = event.args as { token: `0x${string}`; tokenType: number };
+
+  try {
+    const [symbol, decimalsRead, nameRead] = await Promise.all([
+      context.client.readContract({
+        abi: [
+          { name: 'symbol', type: 'function', stateMutability: 'view', inputs: [], outputs: [{ type: 'string' }] },
+        ],
+        address: token,
+        functionName: 'symbol',
+      }).catch(() => (Number(tokenType) === 1 ? 'USDC' : 'ENB')),
+      context.client.readContract({
+        abi: [
+          { name: 'decimals', type: 'function', stateMutability: 'view', inputs: [], outputs: [{ type: 'uint8' }] },
+        ],
+        address: token,
+        functionName: 'decimals',
+      }).catch(() => getTokenDecimals(Number(tokenType))),
+      context.client.readContract({
+        abi: [
+          { name: 'name', type: 'function', stateMutability: 'view', inputs: [], outputs: [{ type: 'string' }] },
+        ],
+        address: token,
+        functionName: 'name',
+      }).catch(() => (Number(tokenType) === 1 ? 'USD Coin' : 'ENB Token')),
+    ]);
+
+    await database
+      .insert(supportedTokens)
+      .values({
+        address: token,
+        chainId,
+        tokenType: Number(tokenType),
+        symbol: String(symbol),
+        decimals: Number(decimalsRead),
+        name: String(nameRead),
+      })
+      .onConflictDoUpdate({
+        symbol: String(symbol),
+        decimals: Number(decimalsRead),
+        name: String(nameRead),
+        tokenType: Number(tokenType),
+      });
+  } catch {}
+});
+
+ponder.on("ENBBountyContract:SupportedTokenRemoved", async ({ event, context }) => {
+  const database = context.db;
+  const chainId = Number(context.chain?.id ?? 0);
+  const { token } = event.args as { token: `0x${string}` };
+
+  // Mark as removed (keeps history); adjust if you prefer deletion
+  await database
+    .update(supportedTokens, { address: token, chainId })
+    .set({ symbol: 'REMOVED', name: 'Removed', decimals: 0 });
+});
+
 
 ponder.on("ENBBountyContract:BountyCancelled", async ({ event, context }) => {
   const database = context.db;
@@ -582,6 +643,7 @@ ponder.on(
       .set({
         isVoting: true,
         deadline: Number(timestamp) + 172800, // 2 days from now
+        currentVotingClaimId: Number(claimId),
       });
 
     await database.insert(transactions).values({
@@ -640,6 +702,7 @@ ponder.on("ENBBountyContract:VotingPeriodReset", async ({ event, context }) => {
     .set({
       isVoting: false,
       deadline: null,
+      currentVotingClaimId: null,
     });
 
   await database.insert(transactions).values({
