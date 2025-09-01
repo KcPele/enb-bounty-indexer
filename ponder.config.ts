@@ -30,8 +30,8 @@ export default createConfig({
       chain: isProduction
         ? {
             base: {
-              address: "0x68C9cD893341220863e16E27800d81F01F6DFb83",
-              startBlock: 33416269,
+              address: "0xE7B8B42d1B8fC584A941768c0348c1178AA906B3",
+              startBlock: 34988320,
             },
           }
         : {
@@ -48,8 +48,8 @@ export default createConfig({
       chain: isProduction
         ? {
             base: {
-              address: "0xFC3dB3f829765D2D192F3d5C3Aa6f24121068346",
-              startBlock: 33416269,
+              address: "0xf0b03A35C4fc40395fd0dB8f3661240534D22a00",
+              startBlock: 34988320,
             },
           }
         : {
