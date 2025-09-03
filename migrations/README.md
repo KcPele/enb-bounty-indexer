@@ -1,4 +1,4 @@
-# ENB Bounty Database Migrations
+# ENB Bounty Database Migrations to be used only when using Superbase
 
 This directory contains database migration files for setting up the ENB Bounty schema with proper RLS (Row Level Security) policies.
 
@@ -83,8 +83,8 @@ Each table gets these policies:
 
 This migration is designed to work with both:
 
-- `enbpublic` (original schema)
-- `enbpublic-v2` (new schema)
+- `public` (original schema)
+- `public` (new schema)
 - Any future schema following the same pattern
 
 ## Safety Features
