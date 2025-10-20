@@ -80,6 +80,7 @@ ponder.on(
       amountSort,
       issuer,
       isMultiplayer,
+      isJoinedBounty: false,
       maxWinners: Number(maxWinners),
       winnersCount: 0,
       tokenType: tokenTypeNum,
@@ -317,6 +318,11 @@ ponder.on("ENBBountyContract:BountyJoined", async ({ event, context }) => {
   // Update bounty to be multiplayer
   const newAmount = (BigInt(currentBounty.amount) + BigInt(amount)).toString();
   const newAmountSort = currentBounty.amountSort + amountSort;
+  const issuerLower =
+    (currentBounty.issuer as string | undefined)?.toLowerCase() ?? "";
+  const participantLower = participant.toLowerCase();
+  const wasJoined = Boolean(currentBounty.isJoinedBounty);
+  const isJoinedBounty = participantLower !== issuerLower ? true : wasJoined;
   
   await database
     .update(bounties, {
@@ -327,6 +333,7 @@ ponder.on("ENBBountyContract:BountyJoined", async ({ event, context }) => {
       isMultiplayer: true,
       amount: newAmount,
       amountSort: newAmountSort,
+      isJoinedBounty,
     });
 
   await database.insert(participationsBounties).values({
@@ -402,7 +409,32 @@ ponder.on(
     const decimals = getTokenDecimals(tokenType);
     const amountSort = Number(formatUnits(amount, decimals));
 
-    // Update bounty amount
+    // Remove participation
+    await database.delete(participationsBounties, {
+      userAddress: participant,
+      bountyId: Number(bountyId),
+      chainId,
+    });
+
+    // Determine if any non-issuer participants remain
+    const remainingParticipants = await database.sql
+      .select()
+      .from(participationsBounties)
+      .where(
+        and(
+          eq(participationsBounties.bountyId, Number(bountyId)),
+          eq(participationsBounties.chainId, chainId)
+        )
+      );
+    const issuerLower =
+      (currentBounty2.issuer as string | undefined)?.toLowerCase() ?? "";
+    const hasOtherParticipants = remainingParticipants.some((entry) => {
+      const entryAddressLower =
+        (entry.userAddress as string | undefined)?.toLowerCase() ?? "";
+      return entryAddressLower !== "" && entryAddressLower !== issuerLower;
+    });
+
+    // Update bounty amount and joined status
     const newAmount2 = (BigInt(currentBounty2.amount) - BigInt(amount)).toString();
     const newAmountSort2 = Math.max(0, currentBounty2.amountSort - amountSort);
     await database
@@ -413,14 +445,8 @@ ponder.on(
       .set({
         amount: newAmount2,
         amountSort: newAmountSort2,
+        isJoinedBounty: hasOtherParticipants,
       });
-
-    // Remove participation
-    await database.delete(participationsBounties, {
-      userAddress: participant,
-      bountyId: Number(bountyId),
-      chainId,
-    });
 
     await database.insert(transactions).values({
       index: transactionIndex,

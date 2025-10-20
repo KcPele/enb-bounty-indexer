@@ -27,6 +27,7 @@ export const bounties = onchainTable(
     inProgress: t.boolean().default(true),
     isCanceled: t.boolean().default(false),
     isMultiplayer: t.boolean(),
+    isJoinedBounty: t.boolean().default(false),
     isVoting: t.boolean().default(false),
     deadline: t.integer(),
     currentVotingClaimId: t.integer(),
