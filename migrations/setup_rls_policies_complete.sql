@@ -15,7 +15,7 @@ CREATE SEQUENCE IF NOT EXISTS "Ban_id_seq"
     NO MAXVALUE
     CACHE 1;
 
--- Create Ban table with same structure as enbpublic
+-- Create Ban table with same structure as public
 CREATE TABLE IF NOT EXISTS "Ban" (
     id integer NOT NULL DEFAULT nextval('"Ban_id_seq"'::regclass),
     chain_id integer NOT NULL,
