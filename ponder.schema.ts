@@ -26,6 +26,9 @@ export const bounties = onchainTable(
     createdAt: t.bigint().notNull().default(0n),
     deadline: t.bigint().notNull().default(0n),
 
+    // Position-based bounty
+    isPositionBased: t.boolean().default(false),
+
     // Status fields
     inProgress: t.boolean().default(true),
     isCanceled: t.boolean().default(false),
@@ -188,6 +191,7 @@ export const bountyWinners = onchainTable(
     chainId: t.integer().notNull(),
     winner: t.hex().notNull(),
     amount: t.text().notNull(),
+    positionIndex: t.integer(),
     timestamp: t.bigint().notNull(),
   }),
   (table) => ({

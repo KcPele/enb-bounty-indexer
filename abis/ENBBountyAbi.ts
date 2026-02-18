@@ -252,6 +252,41 @@ const ENBBountyABI = [
     name: "PlatformFeeUpdated",
     type: "event",
   },
+  // Position-based bounty events
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: "uint256", name: "id", type: "uint256" },
+      { indexed: true, internalType: "address", name: "issuer", type: "address" },
+      { indexed: false, internalType: "string", name: "name", type: "string" },
+      { indexed: false, internalType: "string", name: "description", type: "string" },
+      { indexed: false, internalType: "uint256", name: "totalAmount", type: "uint256" },
+      { indexed: false, internalType: "uint256", name: "positionCount", type: "uint256" },
+      { indexed: false, internalType: "uint8", name: "tokenType", type: "uint8" },
+      { indexed: false, internalType: "address", name: "tokenAddress", type: "address" },
+      { indexed: false, internalType: "uint256", name: "createdAt", type: "uint256" },
+      { indexed: false, internalType: "uint256", name: "deadline", type: "uint256" },
+    ],
+    name: "PositionBountyCreated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: "uint256", name: "bountyId", type: "uint256" },
+      { indexed: true, internalType: "address", name: "claimer", type: "address" },
+      { indexed: false, internalType: "address", name: "bountyIssuer", type: "address" },
+      { indexed: false, internalType: "uint256", name: "positionIndex", type: "uint256" },
+      { indexed: false, internalType: "uint256", name: "positionAmount", type: "uint256" },
+      { indexed: false, internalType: "uint256", name: "fee", type: "uint256" },
+    ],
+    name: "PositionClaimAccepted",
+    type: "event",
+  },
+  // New errors
+  { inputs: [], name: "ETHNotAllowedForPositionBounty", type: "error" },
+  { inputs: [], name: "PositionAmountsRequired", type: "error" },
+  { inputs: [], name: "PositionAmountsMismatch", type: "error" },
   // Functions
   {
     inputs: [
@@ -536,6 +571,45 @@ const ENBBountyABI = [
     name: "updatePlatformFee",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  // Position-based bounty functions
+  {
+    inputs: [
+      { internalType: "string", name: "name", type: "string" },
+      { internalType: "string", name: "description", type: "string" },
+      { internalType: "address", name: "tokenAddress", type: "address" },
+      { internalType: "uint256", name: "tokenAmount", type: "uint256" },
+      { internalType: "uint256[]", name: "positionAmounts", type: "uint256[]" },
+      { internalType: "uint256", name: "durationInDays", type: "uint256" },
+    ],
+    name: "createPositionBounty",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "bountyId", type: "uint256" }],
+    name: "isBountyPositionBased",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "bountyId", type: "uint256" },
+      { internalType: "uint256", name: "positionIndex", type: "uint256" },
+    ],
+    name: "getBountyPositionAmount",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "bountyId", type: "uint256" }],
+    name: "getBountyAllPositionAmounts",
+    outputs: [{ internalType: "uint256[]", name: "amounts", type: "uint256[]" }],
+    stateMutability: "view",
     type: "function",
   },
 ] as const;
