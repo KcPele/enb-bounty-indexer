@@ -18,9 +18,9 @@ export default createConfig({
       base: {
         id: 8453,
         rpc: loadBalance([
-          rateLimit(http("https://base.llamarpc.com"), { requestsPerSecond: 10 }),
-          rateLimit(http("https://base-rpc.publicnode.com"), { requestsPerSecond: 10 }),
-          rateLimit(http("https://mainnet.base.org"), { requestsPerSecond: 10 }),
+          // rateLimit(http("https://base.llamarpc.com"), { requestsPerSecond: 10 }),
+          // rateLimit(http("https://base-rpc.publicnode.com"), { requestsPerSecond: 10 }),
+          // rateLimit(http("https://mainnet.base.org"), { requestsPerSecond: 10 }),
           rateLimit(http(process.env.BASE_RPC_URL!), { requestsPerSecond: 10 }),
         ]),
       },
