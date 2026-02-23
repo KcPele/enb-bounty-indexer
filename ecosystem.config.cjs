@@ -4,7 +4,7 @@ module.exports = {
     {
       name: 'enb-indexer',
       cwd: __dirname,
-      script: 'node_modules/.bin/ponder',
+      script: 'node_modules/ponder/dist/esm/bin/ponder.js',
       args: 'start',
       interpreter: 'node',
       env: { NODE_ENV: 'production' },
