@@ -1,4 +1,5 @@
-import { createConfig } from "ponder";
+import { createConfig, rateLimit } from "ponder";
+import { http } from "viem";
 import ENBBountyABI from "./abis/ENBBountyAbi";
 
 // Use environment variable to determine network
@@ -16,7 +17,7 @@ export default createConfig({
     ? {
       base: {
         id: 8453,
-        rpc: process.env.BASE_RPC_URL,
+        rpc: rateLimit(http(process.env.BASE_RPC_URL!), { requestsPerSecond: 10 }),
       },
     }
     : {
