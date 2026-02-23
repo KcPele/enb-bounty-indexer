@@ -22,6 +22,7 @@ export default createConfig({
           // rateLimit(http("https://base-rpc.publicnode.com"), { requestsPerSecond: 10 }),
           // rateLimit(http("https://mainnet.base.org"), { requestsPerSecond: 10 }),
           rateLimit(http(process.env.BASE_RPC_URL!), { requestsPerSecond: 10 }),
+          rateLimit(http(process.env.BASE_RPC_URL_2!), { requestsPerSecond: 10 }),
         ]),
       },
     }
