@@ -18,10 +18,10 @@ export default createConfig({
       base: {
         id: 8453,
         rpc: loadBalance([
-          rateLimit(http(process.env.BASE_RPC_URL!), { requestsPerSecond: 2 }),
-          rateLimit(http(process.env.BASE_RPC_URL_2!), { requestsPerSecond: 2 }),
-          // rateLimit(http(process.env.BASE_RPC_URL_3!), { requestsPerSecond: 1 }),
-          // rateLimit(http(process.env.BASE_RPC_URL_4!), { requestsPerSecond: 1 }),
+          rateLimit(http(process.env.BASE_RPC_URL!), { requestsPerSecond: 1 }),
+          rateLimit(http(process.env.BASE_RPC_URL_2!), { requestsPerSecond: 1 }),
+          rateLimit(http(process.env.BASE_RPC_URL_3!), { requestsPerSecond: 1 }),
+          rateLimit(http(process.env.BASE_RPC_URL_4!), { requestsPerSecond: 1 }),
         ]),
       },
     }
