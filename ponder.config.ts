@@ -10,7 +10,7 @@ export default createConfig({
   database: {
     kind: "postgres",
     poolConfig: {
-      max: 50,
+      max: 20,
     },
   },
   chains: isProduction
