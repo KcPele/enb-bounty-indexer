@@ -42,31 +42,6 @@ export const bounties = onchainTable(
   }),
 );
 
-export const claims = onchainTable(
-  "Claims",
-  (t) => ({
-    id: t.integer().notNull(),
-    chainId: t.integer().notNull(),
-
-    title: t.text().notNull(),
-    description: t.text().notNull(),
-    url: t.text().notNull(),
-    issuer: t.hex().notNull(),
-
-    isAccepted: t.boolean().default(false),
-
-    bountyId: t.integer().notNull(),
-    owner: t.hex().notNull(),
-  }),
-  (table) => ({
-    pk: primaryKey({
-      columns: [table.id, table.chainId],
-    }),
-    chain_idx: index().on(table.chainId),
-    bounty_idx: index().on(table.bountyId),
-    owner_idx: index().on(table.owner),
-  }),
-);
 
 export const users = onchainTable(
   "Users",
@@ -121,7 +96,6 @@ export const transactions = onchainTable(
 export const bountiesRelations = relations(
   bounties,
   ({ many, one }) => ({
-    claims: many(claims),
     issuer: one(users, {
       fields: [bounties.issuer],
       references: [users.address],
@@ -134,29 +108,11 @@ export const usersRelations = relations(
   users,
   ({ many, one }) => ({
     bounties: many(bounties),
-    claims: many(claims),
     transactions: many(transactions),
     score: many(leaderboard),
   }),
 );
 
-export const claimsRelations = relations(
-  claims,
-  ({ one }) => ({
-    bounty: one(bounties, {
-      fields: [claims.bountyId, claims.chainId],
-      references: [bounties.id, bounties.chainId],
-    }),
-    issuer: one(users, {
-      fields: [claims.issuer],
-      references: [users.address],
-    }),
-    owner: one(users, {
-      fields: [claims.owner],
-      references: [users.address],
-    }),
-  }),
-);
 
 export const transactionRelations = relations(
   transactions,
