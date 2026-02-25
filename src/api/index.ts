@@ -4,7 +4,7 @@ import { Hono } from "hono";
 import { and, eq, graphql, desc } from "ponder";
 
 // Serialize BigInt values as strings in JSON responses
-function serialize(data: unknown): unknown {
+function serialize(data: unknown): any {
   if (data === null || data === undefined) return data;
   if (typeof data === "bigint") return data.toString();
   if (Array.isArray(data)) return data.map(serialize);
@@ -53,24 +53,6 @@ app.get("/bounty/:chainId/:bountyId", async (c) => {
   return c.json(serialize(result[0]));
 });
 
-// Claims for a bounty
-app.get("/bounty/claims/:chainId/:bountyId", async (c) => {
-  const chainId = Number(c.req.param("chainId") ?? 0);
-  const bountyId = Number(c.req.param("bountyId") ?? 0);
-
-  const result = await db
-    .select()
-    .from(schema.claims)
-    .where(
-      and(
-        eq(schema.claims.chainId, chainId),
-        eq(schema.claims.bountyId, bountyId),
-      ),
-    )
-    .orderBy((claim) => claim.id);
-
-  return c.json(serialize(result));
-});
 
 // Live (in-progress) bounties
 app.get("/live/bounty/:chainId", async (c) => {
@@ -107,33 +89,6 @@ app.get("/past/bounty/:chainId", async (c) => {
   return c.json(serialize(result));
 });
 
-// All claims for a chain
-app.get("/claim/:chainId", async (c) => {
-  const chainId = Number(c.req.param("chainId") ?? 0);
-
-  const result = await db
-    .select()
-    .from(schema.claims)
-    .where(eq(schema.claims.chainId, chainId))
-    .orderBy((claim) => claim.id);
-
-  return c.json(serialize(result));
-});
-
-// Single claim by id
-app.get("/claim/:chainId/:claimId", async (c) => {
-  const chainId = Number(c.req.param("chainId") ?? 0);
-  const claimId = Number(c.req.param("claimId"));
-
-  const result = await db
-    .select()
-    .from(schema.claims)
-    .where(
-      and(eq(schema.claims.chainId, chainId), eq(schema.claims.id, claimId)),
-    );
-
-  return c.json(serialize(result[0]));
-});
 
 // Bounty winners
 app.get("/bounty/:chainId/:bountyId/winners", async (c) => {

@@ -1,7 +1,6 @@
 import { ponder } from "ponder:registry";
 import {
   bounties,
-  claims,
   users,
   transactions,
   leaderboard,
