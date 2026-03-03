@@ -1,7 +1,7 @@
 import { db } from "ponder:api";
 import schema from "ponder:schema";
 import { Hono } from "hono";
-import { and, eq, graphql, desc } from "ponder";
+import { and, eq, gte, graphql, desc, count as drizzleCount } from "ponder";
 
 // Serialize BigInt values as strings in JSON responses
 function serialize(data: unknown): any {
@@ -138,6 +138,73 @@ app.get("/tokens/:chainId", async (c) => {
     .where(eq(schema.supportedTokens.chainId, chainId));
 
   return c.json(serialize(result));
+});
+
+// Bounties created by a specific issuer
+// Supports query params: ?chainId=8453&completed=true&minAmount=100
+app.get("/user/:address/bounties", async (c) => {
+  const issuer = c.req.param("address")?.toLowerCase();
+  if (!issuer) {
+    return c.json({ error: "Invalid address" }, 400);
+  }
+
+  const chainIdParam = c.req.query("chainId");
+  const completed = c.req.query("completed");
+  const minAmountParam = c.req.query("minAmount");
+
+  const conditions = [eq(schema.bounties.issuer, issuer as `0x${string}`)];
+
+  if (chainIdParam) {
+    conditions.push(eq(schema.bounties.chainId, Number(chainIdParam)));
+  }
+  if (completed === "true") {
+    conditions.push(eq(schema.bounties.inProgress, false));
+    conditions.push(eq(schema.bounties.isCanceled, false));
+    conditions.push(gte(schema.bounties.winnersCount, 1));
+  }
+  if (minAmountParam) {
+    conditions.push(gte(schema.bounties.amountSort, Number(minAmountParam)));
+  }
+
+  const result = await db
+    .select()
+    .from(schema.bounties)
+    .where(and(...conditions));
+
+  return c.json(serialize(result));
+});
+
+// Count bounties created by an issuer (lightweight, returns only count)
+app.get("/user/:address/bounties/count", async (c) => {
+  const issuer = c.req.param("address")?.toLowerCase();
+  if (!issuer) {
+    return c.json({ error: "Invalid address" }, 400);
+  }
+
+  const chainIdParam = c.req.query("chainId");
+  const completed = c.req.query("completed");
+  const minAmountParam = c.req.query("minAmount");
+
+  const conditions = [eq(schema.bounties.issuer, issuer as `0x${string}`)];
+
+  if (chainIdParam) {
+    conditions.push(eq(schema.bounties.chainId, Number(chainIdParam)));
+  }
+  if (completed === "true") {
+    conditions.push(eq(schema.bounties.inProgress, false));
+    conditions.push(eq(schema.bounties.isCanceled, false));
+    conditions.push(gte(schema.bounties.winnersCount, 1));
+  }
+  if (minAmountParam) {
+    conditions.push(gte(schema.bounties.amountSort, Number(minAmountParam)));
+  }
+
+  const result = await db
+    .select({ count: drizzleCount() })
+    .from(schema.bounties)
+    .where(and(...conditions));
+
+  return c.json({ count: result[0]?.count ?? 0 });
 });
 
 // User wins
