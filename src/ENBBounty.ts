@@ -65,6 +65,8 @@ ponder.on(
       tokenAddress: tokenAddress || null,
       createdAt,
       deadline,
+      inProgress: true,
+      isCanceled: false,
     });
 
     // Upsert supported token metadata
