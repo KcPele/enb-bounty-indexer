@@ -193,3 +193,112 @@ export const bountyWinnersRelations = relations(
   }),
 );
 
+// ── ENBTaskRewards tables ─────────────────────────────────────────────
+
+export const dailyRewardConfig = onchainTable(
+  "DailyRewardConfig",
+  (t) => ({
+    chainId: t.integer().notNull(),
+    token: t.hex().notNull(),
+    amount: t.text().notNull(),
+    isActive: t.boolean().default(true),
+    updatedAt: t.bigint().notNull().default(0n),
+  }),
+  (table) => ({
+    pk: primaryKey({ columns: [table.chainId] }),
+  }),
+);
+
+export const dailyRewardClaims = onchainTable(
+  "DailyRewardClaims",
+  (t) => ({
+    tx: t.hex().notNull(),
+    chainId: t.integer().notNull(),
+    user: t.hex().notNull(),
+    token: t.hex().notNull(),
+    amount: t.text().notNull(),
+    timestamp: t.bigint().notNull(),
+  }),
+  (table) => ({
+    pk: primaryKey({ columns: [table.tx, table.chainId] }),
+    user_idx: index().on(table.user),
+    chain_idx: index().on(table.chainId),
+  }),
+);
+
+export const partnerTasks = onchainTable(
+  "PartnerTasks",
+  (t) => ({
+    id: t.integer().notNull(),
+    chainId: t.integer().notNull(),
+    creator: t.hex().notNull(),
+    token: t.hex().notNull(),
+    totalAmount: t.text().notNull(),
+    amountPerWinner: t.text().notNull(),
+    maxWinners: t.integer().notNull(),
+    claimedCount: t.integer().notNull().default(0),
+    deadline: t.bigint().notNull(),
+    cancelled: t.boolean().default(false),
+    fee: t.text().notNull().default("0"),
+    createdAt: t.bigint().notNull().default(0n),
+  }),
+  (table) => ({
+    pk: primaryKey({ columns: [table.id, table.chainId] }),
+    chain_idx: index().on(table.chainId),
+    creator_idx: index().on(table.creator),
+  }),
+);
+
+export const partnerTaskClaims = onchainTable(
+  "PartnerTaskClaims",
+  (t) => ({
+    taskId: t.integer().notNull(),
+    chainId: t.integer().notNull(),
+    user: t.hex().notNull(),
+    token: t.hex().notNull(),
+    amount: t.text().notNull(),
+    timestamp: t.bigint().notNull(),
+    tx: t.hex().notNull(),
+  }),
+  (table) => ({
+    pk: primaryKey({ columns: [table.taskId, table.chainId, table.user] }),
+    task_idx: index().on(table.taskId),
+    user_idx: index().on(table.user),
+  }),
+);
+
+export const partnerTasksRelations = relations(
+  partnerTasks,
+  ({ one, many }) => ({
+    creatorUser: one(users, {
+      fields: [partnerTasks.creator],
+      references: [users.address],
+    }),
+    claims: many(partnerTaskClaims),
+  }),
+);
+
+export const partnerTaskClaimsRelations = relations(
+  partnerTaskClaims,
+  ({ one }) => ({
+    task: one(partnerTasks, {
+      fields: [partnerTaskClaims.taskId, partnerTaskClaims.chainId],
+      references: [partnerTasks.id, partnerTasks.chainId],
+    }),
+    claimant: one(users, {
+      fields: [partnerTaskClaims.user],
+      references: [users.address],
+    }),
+  }),
+);
+
+export const dailyRewardClaimsRelations = relations(
+  dailyRewardClaims,
+  ({ one }) => ({
+    claimant: one(users, {
+      fields: [dailyRewardClaims.user],
+      references: [users.address],
+    }),
+  }),
+);
+

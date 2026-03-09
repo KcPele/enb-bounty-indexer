@@ -1,6 +1,7 @@
 import { createConfig, loadBalance, rateLimit } from "ponder";
 import { http } from "viem";
 import ENBBountyABI from "./abis/ENBBountyAbi";
+import ENBTaskRewardsABI from "./abis/ENBTaskRewardsAbi";
 
 // Use environment variable to determine network
 const isProduction = process.env.NODE_ENV === "production";
@@ -45,7 +46,24 @@ export default createConfig({
         : {
           localhost: {
             address: (process.env.ENB_BOUNTY_ADDRESS ||
-              "0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44") as `0x${string}`,
+              "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0") as `0x${string}`,
+            startBlock: 0,
+          },
+        },
+    },
+    ENBTaskRewardsContract: {
+      abi: ENBTaskRewardsABI,
+      chain: isProduction
+        ? {
+          base: {
+            address: process.env.ENB_TASK_REWARDS_ADDRESS as `0x${string}`,
+            startBlock: 43139476,
+          },
+        }
+        : {
+          localhost: {
+            address: (process.env.ENB_TASK_REWARDS_ADDRESS ||
+              "0x0000000000000000000000000000000000000000") as `0x${string}`,
             startBlock: 0,
           },
         },

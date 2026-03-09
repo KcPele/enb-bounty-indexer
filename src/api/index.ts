@@ -230,4 +230,95 @@ app.get("/user/:address/wins/:chainId", async (c) => {
   return c.json(serialize(result));
 });
 
+// ── Task Rewards: Daily Config ────────────────────────────────────────
+app.get("/task-rewards/daily/config/:chainId", async (c) => {
+  const chainId = Number(c.req.param("chainId") ?? 0);
+
+  const result = await db
+    .select()
+    .from(schema.dailyRewardConfig)
+    .where(eq(schema.dailyRewardConfig.chainId, chainId));
+
+  return c.json(serialize(result[0] ?? null));
+});
+
+// ── Task Rewards: Daily Claims for a user ─────────────────────────────
+app.get("/task-rewards/daily/claims/:chainId/:user", async (c) => {
+  const chainId = Number(c.req.param("chainId") ?? 0);
+  const userAddress = c.req.param("user")?.toLowerCase();
+  if (!userAddress) return c.json({ error: "Invalid address" }, 400);
+
+  const result = await db
+    .select()
+    .from(schema.dailyRewardClaims)
+    .where(
+      and(
+        eq(schema.dailyRewardClaims.chainId, chainId),
+        eq(schema.dailyRewardClaims.user, userAddress as `0x${string}`),
+      ),
+    )
+    .orderBy(desc(schema.dailyRewardClaims.timestamp));
+
+  return c.json(serialize(result));
+});
+
+// ── Task Rewards: Partner Tasks list ──────────────────────────────────
+app.get("/task-rewards/partner/:chainId", async (c) => {
+  const chainId = Number(c.req.param("chainId") ?? 0);
+  const status = c.req.query("status"); // active | cancelled | completed
+
+  const conditions = [eq(schema.partnerTasks.chainId, chainId)];
+
+  if (status === "cancelled") {
+    conditions.push(eq(schema.partnerTasks.cancelled, true));
+  } else if (status === "active") {
+    conditions.push(eq(schema.partnerTasks.cancelled, false));
+  }
+
+  const result = await db
+    .select()
+    .from(schema.partnerTasks)
+    .where(and(...conditions))
+    .orderBy(desc(schema.partnerTasks.createdAt));
+
+  return c.json(serialize(result));
+});
+
+// ── Task Rewards: Single Partner Task ─────────────────────────────────
+app.get("/task-rewards/partner/:chainId/:taskId", async (c) => {
+  const chainId = Number(c.req.param("chainId") ?? 0);
+  const taskId = Number(c.req.param("taskId"));
+
+  const result = await db
+    .select()
+    .from(schema.partnerTasks)
+    .where(
+      and(
+        eq(schema.partnerTasks.chainId, chainId),
+        eq(schema.partnerTasks.id, taskId),
+      ),
+    );
+
+  return c.json(serialize(result[0] ?? null));
+});
+
+// ── Task Rewards: Partner Task Claims ─────────────────────────────────
+app.get("/task-rewards/partner/:chainId/:taskId/claims", async (c) => {
+  const chainId = Number(c.req.param("chainId") ?? 0);
+  const taskId = Number(c.req.param("taskId"));
+
+  const result = await db
+    .select()
+    .from(schema.partnerTaskClaims)
+    .where(
+      and(
+        eq(schema.partnerTaskClaims.chainId, chainId),
+        eq(schema.partnerTaskClaims.taskId, taskId),
+      ),
+    )
+    .orderBy(desc(schema.partnerTaskClaims.timestamp));
+
+  return c.json(serialize(result));
+});
+
 export default app;
