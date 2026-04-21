@@ -25,6 +25,8 @@ export const bounties = onchainTable(
 
     createdAt: t.bigint().notNull().default(0n),
     deadline: t.bigint().notNull().default(0n),
+    // Review period in seconds (owner can still accept claims during this window after deadline)
+    reviewPeriod: t.bigint().notNull().default(0n),
 
     // Position-based bounty
     isPositionBased: t.boolean().default(false),

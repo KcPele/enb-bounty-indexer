@@ -51,6 +51,24 @@ ponder.on(
     const decimals = getTokenDecimals(tokenTypeNum);
     const amountSort = Number(formatUnits(amount, decimals));
 
+    // Read the review period (stored separately from the event)
+    const reviewPeriod = await context.client
+      .readContract({
+        abi: [
+          {
+            name: "getBountyReviewPeriod",
+            type: "function",
+            stateMutability: "view",
+            inputs: [{ name: "bountyId", type: "uint256" }],
+            outputs: [{ type: "uint256" }],
+          },
+        ],
+        address: event.log.address,
+        functionName: "getBountyReviewPeriod",
+        args: [id],
+      })
+      .catch(() => 0n);
+
     await database.insert(bounties).values({
       id: Number(id),
       chainId,
@@ -65,6 +83,7 @@ ponder.on(
       tokenAddress: tokenAddress || null,
       createdAt,
       deadline,
+      reviewPeriod: reviewPeriod as bigint,
       inProgress: true,
       isCanceled: false,
     });
@@ -446,6 +465,51 @@ ponder.on(
         address: bountyRows[0].issuer,
         bountyId: Number(bountyId),
         action: `batch claims accepted (${claimers.length} winners)`,
+        chainId,
+        timestamp,
+      })
+      .onConflictDoNothing();
+  },
+);
+
+// DeadlineExtended — issuer extended the bounty deadline while still active
+ponder.on(
+  "ENBBountyContract:DeadlineExtended",
+  async ({ event, context }) => {
+    const database = context.db;
+    const { bountyId, newDeadline } = event.args;
+    const { hash, transactionIndex } = event.transaction;
+    const { timestamp } = event.block;
+    const chainId = Number(context.chain?.id ?? 0);
+
+    const existing = await database.sql
+      .select()
+      .from(bounties)
+      .where(
+        and(
+          eq(bounties.id, Number(bountyId)),
+          eq(bounties.chainId, chainId),
+        ),
+      )
+      .limit(1);
+
+    if (!existing[0]) return;
+
+    await database
+      .update(bounties, {
+        id: Number(bountyId),
+        chainId,
+      })
+      .set({ deadline: newDeadline });
+
+    await database
+      .insert(transactions)
+      .values({
+        index: transactionIndex,
+        tx: hash,
+        address: existing[0]!.issuer,
+        bountyId: Number(bountyId),
+        action: "deadline extended",
         chainId,
         timestamp,
       })

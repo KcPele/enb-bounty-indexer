@@ -51,6 +51,23 @@ ponder.on(
     const decimals = getTokenDecimals(tokenTypeNum);
     const amountSort = Number(formatUnits(totalAmount, decimals));
 
+    const reviewPeriod = await context.client
+      .readContract({
+        abi: [
+          {
+            name: "getBountyReviewPeriod",
+            type: "function",
+            stateMutability: "view",
+            inputs: [{ name: "bountyId", type: "uint256" }],
+            outputs: [{ type: "uint256" }],
+          },
+        ],
+        address: event.log.address,
+        functionName: "getBountyReviewPeriod",
+        args: [id],
+      })
+      .catch(() => 0n);
+
     await database.insert(bounties).values({
       id: Number(id),
       chainId,
@@ -66,6 +83,7 @@ ponder.on(
       isPositionBased: true,
       createdAt,
       deadline,
+      reviewPeriod: reviewPeriod as bigint,
     });
 
     // Upsert supported token metadata (position bounties are always ERC20)
