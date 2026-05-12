@@ -35,7 +35,8 @@ COPY --from=build /app/src ./src
 COPY --from=build /app/migrations ./migrations
 
 ENV NODE_ENV=production
+ENV PORT=3000
 
-EXPOSE 42069
+EXPOSE 3000
 
 CMD ["pnpm", "start"]
