@@ -25,7 +25,6 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/generated ./generated
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/ponder.config.ts ./ponder.config.ts
 COPY --from=build /app/ponder.schema.ts ./ponder.schema.ts
