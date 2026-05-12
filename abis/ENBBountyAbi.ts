@@ -1,243 +1,155 @@
 const ENBBountyABI = [
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_ENBBountyNft",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "_treasury",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "_startClaimIndex",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "constructor",
-  },
-  {
     inputs: [],
-    name: "AlreadyVoted",
-    type: "error",
+    stateMutability: "nonpayable",
+    type: "constructor"
   },
   {
     inputs: [],
     name: "AlreadyWon",
-    type: "error",
+    type: "error"
+  },
+  {
+    inputs: [],
+    name: "BatchExceedsMaxWinners",
+    type: "error"
+  },
+  {
+    inputs: [],
+    name: "BatchSizeInvalid",
+    type: "error"
   },
   {
     inputs: [],
     name: "BountyClaimed",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "BountyClaimed",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "BountyClaimed",
-    type: "error",
+    type: "error"
   },
   {
     inputs: [],
     name: "BountyClosed",
-    type: "error",
+    type: "error"
   },
   {
     inputs: [],
     name: "BountyClosed",
-    type: "error",
+    type: "error"
   },
   {
     inputs: [],
-    name: "BountyClosed",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "BountyNotFound",
-    type: "error",
+    name: "BountyNotActive",
+    type: "error"
   },
   {
     inputs: [],
     name: "BountyNotFound",
-    type: "error",
+    type: "error"
   },
   {
     inputs: [],
     name: "BountyNotFound",
-    type: "error",
+    type: "error"
   },
   {
     inputs: [],
-    name: "ClaimNotFound",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "ClaimNotFound",
-    type: "error",
+    name: "ETHNotAllowedForPositionBounty",
+    type: "error"
   },
   {
     inputs: [],
     name: "ETHTransferFailed",
-    type: "error",
+    type: "error"
+  },
+  {
+    inputs: [],
+    name: "InvalidClaimer",
+    type: "error"
+  },
+  {
+    inputs: [],
+    name: "InvalidDuration",
+    type: "error"
+  },
+  {
+    inputs: [],
+    name: "InvalidExtension",
+    type: "error"
   },
   {
     inputs: [],
     name: "InvalidTokenAmount",
-    type: "error",
+    type: "error"
   },
   {
     inputs: [],
-    name: "IssuerCannotClaim",
-    type: "error",
+    name: "PositionAmountsMismatch",
+    type: "error"
   },
   {
     inputs: [],
-    name: "IssuerCannotWithdraw",
-    type: "error",
+    name: "PositionAmountsRequired",
+    type: "error"
   },
   {
     inputs: [],
-    name: "NoActiveVoting",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "NoEther",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "NoVotingPeriodSet",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "NotAParticipant",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "NotActiveParticipant",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "NotOpenBounty",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "NotOpenBounty",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "NotSoloBounty",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "NotSoloBounty",
-    type: "error",
+    name: "ReentrancyGuard",
+    type: "error"
   },
   {
     inputs: [],
     name: "TokenNotSupported",
-    type: "error",
+    type: "error"
   },
   {
     inputs: [],
     name: "UnsupportedToken",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "VotingNotEnded",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "VotingOngoing",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "VotingOngoing",
-    type: "error",
+    type: "error"
   },
   {
     inputs: [],
     name: "WrongCaller",
-    type: "error",
+    type: "error"
   },
   {
     inputs: [],
     name: "WrongCaller",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "WrongCaller",
-    type: "error",
+    type: "error"
   },
   {
     inputs: [],
     name: "ZeroValue",
-    type: "error",
+    type: "error"
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: false,
-        internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
+        internalType: "address",
+        name: "previousAdmin",
+        type: "address"
       },
       {
         indexed: false,
         internalType: "address",
-        name: "issuer",
-        type: "address",
-      },
+        name: "newAdmin",
+        type: "address"
+      }
     ],
-    name: "BountyCancelled",
-    type: "event",
+    name: "AdminChanged",
+    type: "event"
   },
   {
     anonymous: false,
     inputs: [
       {
-        indexed: false,
-        internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
-      },
-      {
-        indexed: false,
+        indexed: true,
         internalType: "address",
-        name: "participant",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
+        name: "beacon",
+        type: "address"
+      }
     ],
-    name: "BountyJoined",
-    type: "event",
+    name: "BeaconUpgraded",
+    type: "event"
   },
   {
     anonymous: false,
@@ -246,35 +158,23 @@ const ENBBountyABI = [
         indexed: false,
         internalType: "uint256",
         name: "bountyId",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "claimId",
-        type: "uint256",
+        type: "uint256"
       },
       {
         indexed: false,
         internalType: "address",
-        name: "claimIssuer",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "bountyIssuer",
-        type: "address",
+        name: "payer",
+        type: "address"
       },
       {
         indexed: false,
         internalType: "uint256",
         name: "fee",
-        type: "uint256",
-      },
+        type: "uint256"
+      }
     ],
-    name: "ClaimAccepted",
-    type: "event",
+    name: "CreationFeeCharged",
+    type: "event"
   },
   {
     anonymous: false,
@@ -282,99 +182,94 @@ const ENBBountyABI = [
       {
         indexed: false,
         internalType: "uint256",
-        name: "id",
-        type: "uint256",
+        name: "oldFee",
+        type: "uint256"
       },
       {
         indexed: false,
-        internalType: "address",
-        name: "issuer",
-        type: "address",
-      },
+        internalType: "uint256",
+        name: "newFee",
+        type: "uint256"
+      }
+    ],
+    name: "CreationFeeUpdated",
+    type: "event"
+  },
+  {
+    anonymous: false,
+    inputs: [
       {
-        indexed: false,
+        indexed: true,
         internalType: "uint256",
         name: "bountyId",
-        type: "uint256",
+        type: "uint256"
       },
       {
         indexed: false,
+        internalType: "uint256",
+        name: "oldDeadline",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "newDeadline",
+        type: "uint256"
+      }
+    ],
+    name: "DeadlineExtended",
+    type: "event"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint8",
+        name: "version",
+        type: "uint8"
+      }
+    ],
+    name: "Initialized",
+    type: "event"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
         internalType: "address",
-        name: "bountyIssuer",
-        type: "address",
+        name: "previousOwner",
+        type: "address"
       },
       {
-        indexed: false,
-        internalType: "string",
-        name: "name",
-        type: "string",
-      },
-      {
-        indexed: false,
-        internalType: "string",
-        name: "description",
-        type: "string",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "createdAt",
-        type: "uint256",
-      },
-    ],
-    name: "ClaimCreated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "claimId",
-        type: "uint256",
-      },
-    ],
-    name: "ClaimSubmittedForVote",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
-      },
-    ],
-    name: "ResetVotingPeriod",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
+        indexed: true,
         internalType: "address",
-        name: "token",
-        type: "address",
+        name: "newOwner",
+        type: "address"
+      }
+    ],
+    name: "OwnershipTransferred",
+    type: "event"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "oldFee",
+        type: "uint256"
       },
       {
         indexed: false,
-        internalType: "enum BountyStorageLib.TokenType",
-        name: "tokenType",
-        type: "uint8",
-      },
+        internalType: "uint256",
+        name: "newFee",
+        type: "uint256"
+      }
     ],
-    name: "SupportedTokenAdded",
-    type: "event",
+    name: "PlatformFeeUpdated",
+    type: "event"
   },
   {
     anonymous: false,
@@ -382,249 +277,159 @@ const ENBBountyABI = [
       {
         indexed: false,
         internalType: "address",
-        name: "token",
-        type: "address",
+        name: "oldTreasury",
+        type: "address"
       },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "newTreasury",
+        type: "address"
+      }
     ],
-    name: "SupportedTokenRemoved",
-    type: "event",
+    name: "TreasuryUpdated",
+    type: "event"
   },
   {
     anonymous: false,
     inputs: [
       {
-        indexed: false,
-        internalType: "uint256",
-        name: "id",
-        type: "uint256",
-      },
-      {
-        indexed: false,
+        indexed: true,
         internalType: "address",
-        name: "issuer",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "string",
-        name: "name",
-        type: "string",
-      },
-      {
-        indexed: false,
-        internalType: "string",
-        name: "description",
-        type: "string",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "maxWinners",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "enum BountyStorageLib.TokenType",
-        name: "tokenType",
-        type: "uint8",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "tokenAddress",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "createdAt",
-        type: "uint256",
-      },
+        name: "implementation",
+        type: "address"
+      }
     ],
-    name: "TokenBountyCreated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "address",
-        name: "voter",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "claimId",
-        type: "uint256",
-      },
-    ],
-    name: "VoteClaim",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
-      },
-    ],
-    name: "VotingPeriodReset",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "participant",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-    ],
-    name: "WithdrawFromOpenBounty",
-    type: "event",
-  },
-  {
-    inputs: [],
-    name: "ENBBountyNft",
-    outputs: [
-      {
-        internalType: "contract IENBBountyNft",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
+    name: "Upgraded",
+    type: "event"
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "bountyId",
-        type: "uint256",
+        type: "uint256"
       },
       {
-        internalType: "uint256",
-        name: "claimId",
-        type: "uint256",
-      },
+        internalType: "address",
+        name: "claimer",
+        type: "address"
+      }
     ],
     name: "acceptClaim",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "address",
         name: "tokenAddress",
-        type: "address",
+        type: "address"
       },
       {
         internalType: "enum BountyStorageLib.TokenType",
         name: "tokenType",
-        type: "uint8",
-      },
+        type: "uint8"
+      }
     ],
     name: "addSupportedToken",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "bountyId",
+        type: "uint256"
+      },
+      {
+        internalType: "address[]",
+        name: "claimers",
+        type: "address[]"
+      }
+    ],
+    name: "batchAcceptClaims",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "index",
-        type: "uint256",
-      },
+        type: "uint256"
+      }
     ],
     name: "bounties",
     outputs: [
       {
         internalType: "uint256",
         name: "id",
-        type: "uint256",
+        type: "uint256"
       },
       {
         internalType: "address",
         name: "issuer",
-        type: "address",
+        type: "address"
       },
       {
         internalType: "string",
         name: "name",
-        type: "string",
+        type: "string"
       },
       {
         internalType: "string",
         name: "description",
-        type: "string",
+        type: "string"
       },
       {
         internalType: "uint256",
         name: "amount",
-        type: "uint256",
-      },
-      {
-        internalType: "address",
-        name: "claimer",
-        type: "address",
+        type: "uint256"
       },
       {
         internalType: "uint256",
         name: "createdAt",
-        type: "uint256",
+        type: "uint256"
       },
       {
         internalType: "uint256",
-        name: "claimId",
-        type: "uint256",
+        name: "deadline",
+        type: "uint256"
       },
       {
         internalType: "uint256",
         name: "maxWinners",
-        type: "uint256",
+        type: "uint256"
       },
       {
         internalType: "uint256",
         name: "winnersCount",
-        type: "uint256",
+        type: "uint256"
       },
+      {
+        internalType: "bool",
+        name: "cancelled",
+        type: "bool"
+      },
+      {
+        internalType: "enum BountyStorageLib.TokenType",
+        name: "tokenType",
+        type: "uint8"
+      },
+      {
+        internalType: "address",
+        name: "tokenAddress",
+        type: "address"
+      }
     ],
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [],
@@ -633,326 +438,229 @@ const ENBBountyABI = [
       {
         internalType: "uint256",
         name: "",
-        type: "uint256",
-      },
+        type: "uint256"
+      }
     ],
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "bountyId",
-        type: "uint256",
-      },
+        type: "uint256"
+      }
     ],
     name: "bountyWinners",
     outputs: [
       {
         internalType: "address[]",
         name: "",
-        type: "address[]",
-      },
+        type: "address[]"
+      }
     ],
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "bountyId",
-        type: "uint256",
-      },
-    ],
-    name: "bountyWinningClaims",
-    outputs: [
-      {
-        internalType: "uint256[]",
-        name: "",
-        type: "uint256[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
-      },
-    ],
-    name: "cancelOpenBounty",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
-      },
+        type: "uint256"
+      }
     ],
     name: "cancelSoloBounty",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "claimCounter",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "index",
-        type: "uint256",
-      },
-    ],
-    name: "claims",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "id",
-        type: "uint256",
-      },
-      {
-        internalType: "address",
-        name: "issuer",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
-      },
-      {
-        internalType: "address",
-        name: "bountyIssuer",
-        type: "address",
-      },
-      {
-        internalType: "string",
-        name: "name",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "description",
-        type: "string",
-      },
-      {
-        internalType: "uint256",
-        name: "createdAt",
-        type: "uint256",
-      },
-      {
-        internalType: "bool",
-        name: "accepted",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
-      },
-      {
-        internalType: "string",
-        name: "name",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "uri",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "description",
-        type: "string",
-      },
-    ],
-    name: "createClaim",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "string",
         name: "name",
-        type: "string",
+        type: "string"
       },
       {
         internalType: "string",
         name: "description",
-        type: "string",
-      },
-      {
-        internalType: "uint256",
-        name: "maxWinners",
-        type: "uint256",
-      },
-    ],
-    name: "createOpenBounty",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "string",
-        name: "name",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "description",
-        type: "string",
-      },
-    ],
-    name: "createOpenBounty",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "string",
-        name: "name",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "description",
-        type: "string",
-      },
-      {
-        internalType: "uint256",
-        name: "maxWinners",
-        type: "uint256",
+        type: "string"
       },
       {
         internalType: "address",
         name: "tokenAddress",
-        type: "address",
+        type: "address"
       },
       {
         internalType: "uint256",
         name: "tokenAmount",
-        type: "uint256",
+        type: "uint256"
       },
+      {
+        internalType: "uint256[]",
+        name: "positionAmounts",
+        type: "uint256[]"
+      },
+      {
+        internalType: "uint256",
+        name: "durationInDays",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "reviewPeriodInDays",
+        type: "uint256"
+      }
     ],
-    name: "createOpenTokenBounty",
+    name: "createPositionBounty",
     outputs: [],
     stateMutability: "payable",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "string",
         name: "name",
-        type: "string",
+        type: "string"
       },
       {
         internalType: "string",
         name: "description",
-        type: "string",
+        type: "string"
       },
       {
         internalType: "uint256",
         name: "maxWinners",
-        type: "uint256",
+        type: "uint256"
       },
+      {
+        internalType: "uint256",
+        name: "durationInDays",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "reviewPeriodInDays",
+        type: "uint256"
+      }
     ],
     name: "createSoloBounty",
     outputs: [],
     stateMutability: "payable",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "string",
         name: "name",
-        type: "string",
+        type: "string"
       },
       {
         internalType: "string",
         name: "description",
-        type: "string",
+        type: "string"
       },
+      {
+        internalType: "uint256",
+        name: "durationInDays",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "reviewPeriodInDays",
+        type: "uint256"
+      }
     ],
     name: "createSoloBounty",
     outputs: [],
     stateMutability: "payable",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "string",
         name: "name",
-        type: "string",
+        type: "string"
       },
       {
         internalType: "string",
         name: "description",
-        type: "string",
+        type: "string"
       },
       {
         internalType: "uint256",
         name: "maxWinners",
-        type: "uint256",
+        type: "uint256"
       },
       {
         internalType: "address",
         name: "tokenAddress",
-        type: "address",
+        type: "address"
       },
       {
         internalType: "uint256",
         name: "tokenAmount",
-        type: "uint256",
+        type: "uint256"
       },
+      {
+        internalType: "uint256",
+        name: "durationInDays",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "reviewPeriodInDays",
+        type: "uint256"
+      }
     ],
     name: "createTokenBounty",
     outputs: [],
     stateMutability: "payable",
-    type: "function",
+    type: "function"
+  },
+  {
+    inputs: [],
+    name: "creationFeeRate",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "bountyId",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "additionalDays",
+        type: "uint256"
+      }
+    ],
+    name: "extendDeadline",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "offset",
-        type: "uint256",
-      },
+        type: "uint256"
+      }
     ],
     name: "getBounties",
     outputs: [
@@ -961,84 +669,84 @@ const ENBBountyABI = [
           {
             internalType: "uint256",
             name: "id",
-            type: "uint256",
+            type: "uint256"
           },
           {
             internalType: "address",
             name: "issuer",
-            type: "address",
+            type: "address"
           },
           {
             internalType: "string",
             name: "name",
-            type: "string",
+            type: "string"
           },
           {
             internalType: "string",
             name: "description",
-            type: "string",
+            type: "string"
           },
           {
             internalType: "uint256",
             name: "amount",
-            type: "uint256",
-          },
-          {
-            internalType: "address",
-            name: "claimer",
-            type: "address",
+            type: "uint256"
           },
           {
             internalType: "uint256",
             name: "createdAt",
-            type: "uint256",
+            type: "uint256"
           },
           {
             internalType: "uint256",
-            name: "claimId",
-            type: "uint256",
+            name: "deadline",
+            type: "uint256"
           },
           {
             internalType: "uint256",
             name: "maxWinners",
-            type: "uint256",
+            type: "uint256"
           },
           {
             internalType: "uint256",
             name: "winnersCount",
-            type: "uint256",
+            type: "uint256"
+          },
+          {
+            internalType: "bool",
+            name: "cancelled",
+            type: "bool"
           },
           {
             internalType: "enum BountyStorageLib.TokenType",
             name: "tokenType",
-            type: "uint8",
+            type: "uint8"
           },
           {
             internalType: "address",
             name: "tokenAddress",
-            type: "address",
-          },
+            type: "address"
+          }
         ],
         internalType: "struct BountyStorageLib.Bounty[10]",
         name: "",
-        type: "tuple[10]",
-      },
+        type: "tuple[10]"
+      }
     ],
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "address",
         name: "user",
-        type: "address",
+        type: "address"
       },
       {
         internalType: "uint256",
         name: "offset",
-        type: "uint256",
-      },
+        type: "uint256"
+      }
     ],
     name: "getBountiesByUser",
     outputs: [
@@ -1047,71 +755,71 @@ const ENBBountyABI = [
           {
             internalType: "uint256",
             name: "id",
-            type: "uint256",
+            type: "uint256"
           },
           {
             internalType: "address",
             name: "issuer",
-            type: "address",
+            type: "address"
           },
           {
             internalType: "string",
             name: "name",
-            type: "string",
+            type: "string"
           },
           {
             internalType: "string",
             name: "description",
-            type: "string",
+            type: "string"
           },
           {
             internalType: "uint256",
             name: "amount",
-            type: "uint256",
-          },
-          {
-            internalType: "address",
-            name: "claimer",
-            type: "address",
+            type: "uint256"
           },
           {
             internalType: "uint256",
             name: "createdAt",
-            type: "uint256",
+            type: "uint256"
           },
           {
             internalType: "uint256",
-            name: "claimId",
-            type: "uint256",
+            name: "deadline",
+            type: "uint256"
           },
           {
             internalType: "uint256",
             name: "maxWinners",
-            type: "uint256",
+            type: "uint256"
           },
           {
             internalType: "uint256",
             name: "winnersCount",
-            type: "uint256",
+            type: "uint256"
+          },
+          {
+            internalType: "bool",
+            name: "cancelled",
+            type: "bool"
           },
           {
             internalType: "enum BountyStorageLib.TokenType",
             name: "tokenType",
-            type: "uint8",
+            type: "uint8"
           },
           {
             internalType: "address",
             name: "tokenAddress",
-            type: "address",
-          },
+            type: "address"
+          }
         ],
         internalType: "struct BountyStorageLib.Bounty[10]",
         name: "",
-        type: "tuple[10]",
-      },
+        type: "tuple[10]"
+      }
     ],
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [],
@@ -1120,512 +828,363 @@ const ENBBountyABI = [
       {
         internalType: "uint256",
         name: "",
-        type: "uint256",
-      },
+        type: "uint256"
+      }
     ],
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "bountyId",
-        type: "uint256",
+        type: "uint256"
+      }
+    ],
+    name: "getBountyAllPositionAmounts",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "amounts",
+        type: "uint256[]"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "bountyId",
+        type: "uint256"
       },
+      {
+        internalType: "uint256",
+        name: "positionIndex",
+        type: "uint256"
+      }
+    ],
+    name: "getBountyPositionAmount",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "bountyId",
+        type: "uint256"
+      }
+    ],
+    name: "getBountyReviewPeriod",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "bountyId",
+        type: "uint256"
+      }
+    ],
+    name: "getBountyStatus",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "bountyId",
+        type: "uint256"
+      }
     ],
     name: "getBountyTokenInfo",
     outputs: [
       {
         internalType: "enum BountyStorageLib.TokenType",
         name: "tokenType",
-        type: "uint8",
+        type: "uint8"
       },
       {
         internalType: "address",
         name: "tokenAddress",
-        type: "address",
-      },
+        type: "address"
+      }
     ],
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "bountyId",
-        type: "uint256",
-      },
+        type: "uint256"
+      }
     ],
     name: "getBountyWinners",
     outputs: [
       {
         internalType: "address[]",
         name: "",
-        type: "address[]",
-      },
-      {
-        internalType: "uint256[]",
-        name: "",
-        type: "uint256[]",
-      },
+        type: "address[]"
+      }
     ],
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "bountyId",
-        type: "uint256",
-      },
-    ],
-    name: "getClaimsByBountyId",
-    outputs: [
-      {
-        components: [
-          {
-            internalType: "uint256",
-            name: "id",
-            type: "uint256",
-          },
-          {
-            internalType: "address",
-            name: "issuer",
-            type: "address",
-          },
-          {
-            internalType: "uint256",
-            name: "bountyId",
-            type: "uint256",
-          },
-          {
-            internalType: "address",
-            name: "bountyIssuer",
-            type: "address",
-          },
-          {
-            internalType: "string",
-            name: "name",
-            type: "string",
-          },
-          {
-            internalType: "string",
-            name: "description",
-            type: "string",
-          },
-          {
-            internalType: "uint256",
-            name: "createdAt",
-            type: "uint256",
-          },
-          {
-            internalType: "bool",
-            name: "accepted",
-            type: "bool",
-          },
-        ],
-        internalType: "struct BountyStorageLib.Claim[]",
-        name: "",
-        type: "tuple[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "user",
-        type: "address",
-      },
-    ],
-    name: "getClaimsByUser",
-    outputs: [
-      {
-        components: [
-          {
-            internalType: "uint256",
-            name: "id",
-            type: "uint256",
-          },
-          {
-            internalType: "address",
-            name: "issuer",
-            type: "address",
-          },
-          {
-            internalType: "uint256",
-            name: "bountyId",
-            type: "uint256",
-          },
-          {
-            internalType: "address",
-            name: "bountyIssuer",
-            type: "address",
-          },
-          {
-            internalType: "string",
-            name: "name",
-            type: "string",
-          },
-          {
-            internalType: "string",
-            name: "description",
-            type: "string",
-          },
-          {
-            internalType: "uint256",
-            name: "createdAt",
-            type: "uint256",
-          },
-          {
-            internalType: "bool",
-            name: "accepted",
-            type: "bool",
-          },
-        ],
-        internalType: "struct BountyStorageLib.Claim[]",
-        name: "",
-        type: "tuple[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getClaimsLength",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
-      },
-    ],
-    name: "getParticipants",
-    outputs: [
-      {
-        internalType: "address[]",
-        name: "",
-        type: "address[]",
-      },
-      {
-        internalType: "uint256[]",
-        name: "",
-        type: "uint256[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
-      },
+        type: "uint256"
+      }
     ],
     name: "getRemainingWinnerSlots",
     outputs: [
       {
         internalType: "uint256",
         name: "",
-        type: "uint256",
-      },
+        type: "uint256"
+      }
     ],
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "address",
         name: "tokenAddress",
-        type: "address",
-      },
+        type: "address"
+      }
     ],
     name: "getTokenType",
     outputs: [
       {
         internalType: "enum BountyStorageLib.TokenType",
         name: "",
-        type: "uint8",
-      },
+        type: "uint8"
+      }
     ],
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "enum BountyStorageLib.TokenType",
         name: "tokenType",
-        type: "uint8",
-      },
+        type: "uint8"
+      }
     ],
     name: "getTokenTypeName",
     outputs: [
       {
         internalType: "string",
         name: "",
-        type: "string",
-      },
+        type: "string"
+      }
     ],
     stateMutability: "pure",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "bountyId",
-        type: "uint256",
+        type: "uint256"
       },
       {
         internalType: "address",
         name: "winner",
-        type: "address",
-      },
+        type: "address"
+      }
     ],
     name: "hasAddressWon",
     outputs: [
       {
         internalType: "bool",
         name: "",
-        type: "bool",
-      },
+        type: "bool"
+      }
     ],
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "uint256",
         name: "bountyId",
-        type: "uint256",
+        type: "uint256"
       },
       {
         internalType: "address",
         name: "winner",
-        type: "address",
-      },
+        type: "address"
+      }
     ],
     name: "hasWon",
     outputs: [
       {
         internalType: "bool",
         name: "",
-        type: "bool",
-      },
+        type: "bool"
+      }
     ],
     stateMutability: "view",
-    type: "function",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_treasury",
+        type: "address"
+      }
+    ],
+    name: "initialize",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "bountyId",
+        type: "uint256"
+      }
+    ],
+    name: "isBountyPositionBased",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "address",
         name: "tokenAddress",
-        type: "address",
-      },
+        type: "address"
+      }
     ],
     name: "isTokenSupported",
     outputs: [
       {
         internalType: "bool",
         name: "",
-        type: "bool",
-      },
+        type: "bool"
+      }
     ],
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
-      },
-    ],
-    name: "joinOpenBounty",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "tokenAmount",
-        type: "uint256",
-      },
-    ],
-    name: "joinOpenBountyWithToken",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-      {
-        internalType: "bytes",
-        name: "",
-        type: "bytes",
-      },
-    ],
-    name: "onERC721Received",
-    outputs: [
-      {
-        internalType: "bytes4",
-        name: "",
-        type: "bytes4",
-      },
-    ],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "index",
-        type: "uint256",
-      },
-    ],
-    name: "participantAmounts",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "index",
-        type: "uint256",
-      },
-    ],
-    name: "participants",
+    inputs: [],
+    name: "owner",
     outputs: [
       {
         internalType: "address",
         name: "",
-        type: "address",
-      },
+        type: "address"
+      }
     ],
     stateMutability: "view",
-    type: "function",
+    type: "function"
+  },
+  {
+    inputs: [],
+    name: "platformFeeRate",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [],
+    name: "proxiableUUID",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "address",
         name: "tokenAddress",
-        type: "address",
-      },
+        type: "address"
+      }
     ],
     name: "removeSupportedToken",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
+    type: "function"
+  },
+  {
+    inputs: [],
+    name: "renounceOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function"
   },
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
-      },
+        internalType: "address",
+        name: "newOwner",
+        type: "address"
+      }
     ],
-    name: "resetVotingPeriod",
+    name: "transferOwnership",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
-      },
-    ],
-    name: "resolveVote",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "claimId",
-        type: "uint256",
-      },
-    ],
-    name: "submitClaimForVote",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [],
@@ -1634,55 +1193,366 @@ const ENBBountyABI = [
       {
         internalType: "address",
         name: "",
-        type: "address",
-      },
+        type: "address"
+      }
     ],
     stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
-      },
-      {
-        internalType: "bool",
-        name: "vote",
-        type: "bool",
-      },
+        name: "newFee",
+        type: "uint256"
+      }
     ],
-    name: "voteClaim",
+    name: "updateCreationFee",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "votingPeriod",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
+    type: "function"
   },
   {
     inputs: [
       {
         internalType: "uint256",
-        name: "bountyId",
-        type: "uint256",
-      },
+        name: "newFee",
+        type: "uint256"
+      }
     ],
-    name: "withdrawFromOpenBounty",
+    name: "updatePlatformFee",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
+    type: "function"
   },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newTreasury",
+        type: "address"
+      }
+    ],
+    name: "updateTreasury",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newImplementation",
+        type: "address"
+      }
+    ],
+    name: "upgradeTo",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newImplementation",
+        type: "address"
+      },
+      {
+        internalType: "bytes",
+        name: "data",
+        type: "bytes"
+      }
+    ],
+    name: "upgradeToAndCall",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "bountyId",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "issuer",
+        type: "address"
+      }
+    ],
+    name: "BountyCancelled",
+    type: "event"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "id",
+        type: "uint256"
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "issuer",
+        type: "address"
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "name",
+        type: "string"
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "description",
+        type: "string"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "totalAmount",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "positionCount",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "enum BountyStorageLib.TokenType",
+        name: "tokenType",
+        type: "uint8"
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "tokenAddress",
+        type: "address"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "createdAt",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256"
+      }
+    ],
+    name: "PositionBountyCreated",
+    type: "event"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "id",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "issuer",
+        type: "address"
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "name",
+        type: "string"
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "description",
+        type: "string"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "maxWinners",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "enum BountyStorageLib.TokenType",
+        name: "tokenType",
+        type: "uint8"
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "tokenAddress",
+        type: "address"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "createdAt",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256"
+      }
+    ],
+    name: "TokenBountyCreated",
+    type: "event"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "bountyId",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "address[]",
+        name: "claimers",
+        type: "address[]"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "totalFee",
+        type: "uint256"
+      }
+    ],
+    name: "BatchClaimsAccepted",
+    type: "event"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "bountyId",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "claimer",
+        type: "address"
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "bountyIssuer",
+        type: "address"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "fee",
+        type: "uint256"
+      }
+    ],
+    name: "ClaimAccepted",
+    type: "event"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "bountyId",
+        type: "uint256"
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "claimer",
+        type: "address"
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "bountyIssuer",
+        type: "address"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "positionIndex",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "positionAmount",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "fee",
+        type: "uint256"
+      }
+    ],
+    name: "PositionClaimAccepted",
+    type: "event"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "token",
+        type: "address"
+      },
+      {
+        indexed: false,
+        internalType: "enum BountyStorageLib.TokenType",
+        name: "tokenType",
+        type: "uint8"
+      }
+    ],
+    name: "SupportedTokenAdded",
+    type: "event"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "token",
+        type: "address"
+      }
+    ],
+    name: "SupportedTokenRemoved",
+    type: "event"
+  }
 ] as const;
+
 export default ENBBountyABI;
