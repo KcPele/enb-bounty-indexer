@@ -18,6 +18,7 @@ export default createConfig({
     ? {
       base: {
         id: 8453,
+        ethGetLogsBlockRange: 10,
         rpc: loadBalance([
           // rateLimit(http(process.env.BASE_RPC_URL!), { requestsPerSecond: 7 }),
           rateLimit(http(process.env.BASE_RPC_URL_2!), { requestsPerSecond: 7 }),
