@@ -60,7 +60,7 @@ export default createConfig({
         ? {
           base: {
             address: process.env.ENB_TASK_REWARDS_ADDRESS as `0x${string}`,
-            startBlock: 43139476,
+            startBlock: 51127200,
           },
         }
         : {
