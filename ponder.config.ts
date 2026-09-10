@@ -43,7 +43,7 @@ export default createConfig({
         ? {
           base: {
             address: process.env.ENB_BOUNTY_ADDRESS as `0x${string}`,
-            startBlock: 44981537,
+            startBlock: 51127200,
           },
         }
         : {
